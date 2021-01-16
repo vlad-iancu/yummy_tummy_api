@@ -12,6 +12,6 @@ let authRouter = require('./auth').authRouter
 }) */
 app.use(authRouter);
 
-app.listen(80, () => {
+app.listen(process.env.PORT, () => {
     console.log("App listening on http://localhost");
 })
