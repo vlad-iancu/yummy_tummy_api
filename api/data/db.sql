@@ -5,5 +5,7 @@ CREATE TABLE user(
     name VARCHAR(64),
     password VARCHAR(128),
     email VARCHAR(128),
-    phone VARCHAR(16)
+    phone VARCHAR(16),
+    UNIQUE(email),
+    UNIQUE(phone)
 );

@@ -1,0 +1,52 @@
+[
+    {
+        "path": "/register",
+        "method": "POST",
+        "params":
+        [
+            {
+                "name": "name",
+                "type": "string",
+                "presence": "MANDATORY"
+            },
+            {
+                "name": "email",
+                "type": "string",
+                "presence": "OPTIONAL"
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "presence": "MANDATORY"
+            },
+            {
+                "name": "phone",
+                "type": "string",
+                "presence": "OPTIONAL"
+            }
+        ]
+        
+    },
+    {
+        "path": "/login",
+        "method": "POST",
+        "params":
+        [
+            {
+                "name": "email",
+                "type": "string",
+                "presence": "OPTIONAL"
+            },
+            {
+                "name": "phone",
+                "type": "string",
+                "presence": "OPTIONAL"
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "presence": "MANDATORY"
+            }
+        ]
+    }
+]
