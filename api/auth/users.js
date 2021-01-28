@@ -6,7 +6,7 @@ let validation = require('../../validate')
 let files = require('fs')
 let path = require('path')
 let jwt = require('jsonwebtoken')
-let { getUser } = require('./data')
+let { getUser, isDuplicateUser } = require('./data')
 const usersRouter = express.Router();
 
 usersRouter.use(bodyParser.json())
@@ -17,7 +17,7 @@ usersRouter.use(validator)
 
 usersRouter.post("/register", (req, res) => {
     let { name, email, phone, password } = req.body
-    if (email == null && phone == null) {
+    if (!email && !phone) {
         res.status(400);
         res.send({
             message: "You need to provide an email or a phone number"
@@ -27,13 +27,22 @@ usersRouter.post("/register", (req, res) => {
     }
     password = bcrypt.hashSync(password, 10)
     let db = new Database();
+    isDuplicateUser(db, { email, phone })
+        .then(result => {
+            if (result.phoneDuplicate || result.emailDuplicate) {
+                res.status(400);
+                let email = result.emailDuplicate ? "email" : "";
+                let phone = result.phoneDuplicate ? "phone" : "";
+                let and = result.phoneDuplicate && result.emailDuplicate ? " and " : "";
+                res.send({ message: `There is another user with the same ${email}${and}${phone}` })
+            }
+        })
     db.query("INSERT INTO user(name, password, email, phone) VALUES(?,?,?,?)", [name, password, email, phone])
         .then(result => {
             res.send({ name, email, phone, id: result.insertId })
         })
         .catch(err => {
             res.status(400);
-            res.send(err)
         })
         .finally(() => {
             db.close()
@@ -49,6 +58,7 @@ usersRouter.post("/login", (req, res) => {
         });
     }
     let db = new Database();
+
     getUser(db, { email, phone })
         .then(result => {
             if (result.length != 1) {
