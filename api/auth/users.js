@@ -45,7 +45,7 @@ usersRouter.post("/register", (req, res) => {
             res.status(400);
         })
         .finally(() => {
-            db.close()
+            db.close().catch((err) => { });
         })
 })
 
