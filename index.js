@@ -8,5 +8,5 @@ let path = require('path')
 app.use(authRouter);
 
 https.createServer(ssl.credentials, app).listen(process.env.PORT, () => {
-    console.log("App listening on http://localhost");
+    console.log("App listening on https://localhost");
 })
