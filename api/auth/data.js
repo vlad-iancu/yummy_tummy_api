@@ -1,8 +1,8 @@
 
 async function getUser(db, { email, phone }) {
     let dbPromise = null;
-    if (email != null)
-        if (phone != null) {
+    if (email)
+        if (phone) {
             dbPromise = db.query("SELECT * FROM user WHERE (email = ? AND phone = ?)",
                 [email, phone]);
         }

@@ -24,27 +24,27 @@ function createValidator(specs) {
                 res.send({ message: `Parameter '${name}' is missing` })
                 return;
             }
-            if(content === "email" && !error) {
-                if(data[name] != null && !validateEmail(data[name])) {
+            if (content === "email" && !error) {
+                if (data[name] && !validateEmail(data[name])) {
                     error = true
                     res.status(400)
-                    res.send({message: `Parameter '${name}' is not a valid email address`})
+                    res.send({ message: `Parameter '${name}' is not a valid email address` })
                     return
                 }
             }
-            if(content === "alphanumeric" && !error) {
-                if(data[name] != null && !validateName(data[name])) {
+            if (content === "alphanumeric" && !error) {
+                if (data[name] && !validateName(data[name])) {
                     error = true
                     res.status(400)
-                    res.send({message: `Parameter '${name}' must contain only letters numbers and underscore characters`})
+                    res.send({ message: `Parameter '${name}' must contain only letters numbers and underscore characters` })
                     return
                 }
             }
-            if(content === "phone" && !error) {
-                if(data[name] != null && !validatePhone(data[name])) {
+            if (content === "phone" && !error) {
+                if (data[name] && !validatePhone(data[name])) {
                     error = true
                     res.status(400)
-                    res.send({message: `Parameter '${name}' is not a valid phone number`})
+                    res.send({ message: `Parameter '${name}' is not a valid phone number` })
                     return
                 }
             }
@@ -65,7 +65,7 @@ function validateEmail(emailAdress) {
 }
 function validateName(name) {
     let nameRegex = /^([A-Za-z0-9\s\_]*)$/;
-    if(name.match(nameRegex)) {
+    if (name.match(nameRegex)) {
         return true;
     }
     else return false;
