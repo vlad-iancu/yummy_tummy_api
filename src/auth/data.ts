@@ -1,5 +1,9 @@
-
-async function getUser(db, { email, phone }) {
+import { Database } from "../data/Database";
+type UserIdentifier = {
+    email? : string,
+    phone? : string
+}
+async function getUser(db: Database, { email, phone }: UserIdentifier) {
     let dbPromise = null;
     if (email)
         if (phone) {
@@ -14,7 +18,7 @@ async function getUser(db, { email, phone }) {
     return dbPromise
 }
 
-async function isDuplicateUser(db, { email, phone }) {
+async function isDuplicateUser(db: Database, { email, phone }: UserIdentifier) {
     let dbPromise = null
     return db.query("SELECT email, phone from user WHERE (email = ? OR phone = ?)", [email, phone])
         .then(result => {
@@ -24,5 +28,4 @@ async function isDuplicateUser(db, { email, phone }) {
             }
         })
 }
-module.exports.getUser = getUser
-module.exports.isDuplicateUser = isDuplicateUser
+export {getUser, isDuplicateUser}

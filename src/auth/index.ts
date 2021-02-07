@@ -1,11 +1,11 @@
-let express = require('express')
+import * as express from 'express'
 var authRouter = express.Router();
-let usersRouter = require('./users').usersRouter
+import { usersRouter } from './users'
 
 authRouter.use(usersRouter)
-authRouter.use(function (err, req, res, next) {
+authRouter.use(function (err, req: express.Request, res: express.Response, next: express.NextFunction) {
     if (err instanceof SyntaxError) {
-        error = true;
+        err = true;
         res.status(400);
         res.send({ message: "Malformed input, request is not a valid JSON" });
         return
@@ -13,5 +13,5 @@ authRouter.use(function (err, req, res, next) {
         next();
 })
 
-module.exports.authRouter = authRouter
+export { authRouter }
 

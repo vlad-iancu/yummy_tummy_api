@@ -1,12 +1,14 @@
-let express = require('express')
-let Database = require('../data/Database').Database
+
+import * as express from 'express'
+import {Database} from '../data/Database'
 let bodyParser = require('body-parser')
 let bcrypt = require('bcrypt')
-let validation = require('../../validate')
+let validation = require('../validate')
 let files = require('fs')
 let path = require('path')
 let jwt = require('jsonwebtoken')
-let { getUser, isDuplicateUser } = require('./data')
+
+import { getUser, isDuplicateUser } from './data'
 const usersRouter = express.Router();
 
 usersRouter.use(bodyParser.json())
@@ -15,8 +17,20 @@ console.log(__dirname)
 let validator = validation.createValidator(validation.specs)
 usersRouter.use(validator)
 
-usersRouter.post("/register", (req, res) => {
-    let { name, email, phone, password } = req.body
+type RegisterRequest = {
+    name: string,
+    email?: string,
+    phone?: string,
+    password: string
+}
+type LoginRequest = {
+    email?: string,
+    phone?: string,
+    password: string
+}
+usersRouter.post("/register", (req: express.Request, res: express.Response) => {
+    
+    let { name, email, phone, password }: RegisterRequest = req.body
     if (!email && !phone) {
         res.status(400);
         res.send({
@@ -49,8 +63,8 @@ usersRouter.post("/register", (req, res) => {
         })
 })
 
-usersRouter.post("/login", (req, res) => {
-    let { email, phone, password } = req.body;
+usersRouter.post("/login", (req: express.Request, res: express.Response) => {
+    let { email, phone, password }: LoginRequest = req.body;
     if (email == null && phone == null) {
         res.status(400);
         res.send({
@@ -84,11 +98,11 @@ usersRouter.post("/login", (req, res) => {
         })
 })
 
-usersRouter.get("/user", (req, res) => {
+usersRouter.get("/user", (req: express.Request, res: express.Response) => {
 
 })
 
-usersRouter.delete("/user", (req, res) => {
+usersRouter.delete("/user", (req: express.Request, res: express.Response) => {
 
 })
 
@@ -97,8 +111,4 @@ function authorize(req, res, next) {
 
 }
 
-
-
-
-module.exports.usersRouter = usersRouter
-module.exports.authorize = authorize
+export {authorize, usersRouter}

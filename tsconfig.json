@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "outDir": "./build",
+        "allowJs": true,
+        "target": "ES3",
+        "moduleResolution": "Node",
+        
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

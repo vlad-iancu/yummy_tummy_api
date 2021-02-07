@@ -1,4 +1,6 @@
-const mysql = require('mysql')
+import { Connection, createConnection, MysqlError } from "mysql"
+
+
 const dotenv = require('dotenv')
 dotenv.config()
 const defaultConfig = {
@@ -9,16 +11,18 @@ const defaultConfig = {
 }
 
 class Database {
-    constructor(config) {
+    private connection: Connection
+    constructor(config?) {
         if (config)
-            this.connection = mysql.createConnection(config);
+            this.connection = createConnection(config);
         else
-            this.connection = mysql.createConnection(defaultConfig)
+            this.connection = createConnection(defaultConfig)
     }
 
-    query(sql, args) {
+    async query(sql: string, args: Array<any>): Promise<any> {
+        
         return new Promise((resolve, reject) => {
-            this.connection.query(sql, args, (err, rows) => {
+            this.connection.query(sql, args, function(err: MysqlError, rows) {
                 if (err) {
                     reject(err)
                 }
@@ -29,13 +33,12 @@ class Database {
         })
     }
     close() {
-        
         return new Promise((resolve, reject) => {
             this.connection.end((err) => {
                 if (err)
                     reject(err)
                 else
-                    resolve()
+                    resolve(null)
             })
         })
     }
@@ -43,5 +46,4 @@ class Database {
 
 
 
-exports.defaultConfig = defaultConfig
-exports.Database = Database
+export {defaultConfig, Database}

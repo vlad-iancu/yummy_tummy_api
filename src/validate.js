@@ -78,6 +78,6 @@ function validatePhone(phone) {
         return false;
     }
 }
-const specs = JSON.parse(files.readFileSync(path.join(__dirname, "api_specs.json")))
+const specs = JSON.parse(files.readFileSync(path.resolve("./api_specs.json")))
 module.exports.createValidator = createValidator
 module.exports.specs = specs
