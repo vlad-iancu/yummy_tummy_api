@@ -83,3 +83,4 @@ function validatePhone(phone) {
 var specs = JSON.parse(files.readFileSync(path.resolve("./api_specs.json")));
 module.exports.createValidator = createValidator;
 module.exports.specs = specs;
+//# sourceMappingURL=validate.js.map

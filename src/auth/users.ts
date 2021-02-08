@@ -9,13 +9,13 @@ let path = require('path')
 let jwt = require('jsonwebtoken')
 
 import { getUser, isDuplicateUser } from './data'
-const usersRouter = express.Router();
+const router = express.Router();
 
-usersRouter.use(bodyParser.json())
+router.use(bodyParser.json())
 console.log(__dirname)
 
 let validator = validation.createValidator(validation.specs)
-usersRouter.use(validator)
+router.use(validator)
 
 type RegisterRequest = {
     name: string,
@@ -28,7 +28,7 @@ type LoginRequest = {
     phone?: string,
     password: string
 }
-usersRouter.post("/register", (req: express.Request, res: express.Response) => {
+router.post("/register", (req: express.Request, res: express.Response) => {
     
     let { name, email, phone, password }: RegisterRequest = req.body
     if (!email && !phone) {
@@ -63,7 +63,7 @@ usersRouter.post("/register", (req: express.Request, res: express.Response) => {
         })
 })
 
-usersRouter.post("/login", (req: express.Request, res: express.Response) => {
+router.post("/login", (req: express.Request, res: express.Response) => {
     let { email, phone, password }: LoginRequest = req.body;
     if (email == null && phone == null) {
         res.status(400);
@@ -98,17 +98,12 @@ usersRouter.post("/login", (req: express.Request, res: express.Response) => {
         })
 })
 
-usersRouter.get("/user", (req: express.Request, res: express.Response) => {
+router.get("/user", (req: express.Request, res: express.Response) => {
 
 })
 
-usersRouter.delete("/user", (req: express.Request, res: express.Response) => {
+router.delete("/user", (req: express.Request, res: express.Response) => {
 
 })
 
-
-function authorize(req, res, next) {
-
-}
-
-export {authorize, usersRouter}
+export { router as usersRouter}

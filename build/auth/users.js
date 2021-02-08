@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.usersRouter = exports.authorize = void 0;
+exports.usersRouter = void 0;
 var express = require("express");
 var Database_1 = require("../data/Database");
 var bodyParser = require('body-parser');
@@ -10,13 +10,13 @@ var files = require('fs');
 var path = require('path');
 var jwt = require('jsonwebtoken');
 var data_1 = require("./data");
-var usersRouter = express.Router();
-exports.usersRouter = usersRouter;
-usersRouter.use(bodyParser.json());
+var router = express.Router();
+exports.usersRouter = router;
+router.use(bodyParser.json());
 console.log(__dirname);
 var validator = validation.createValidator(validation.specs);
-usersRouter.use(validator);
-usersRouter.post("/register", function (req, res) {
+router.use(validator);
+router.post("/register", function (req, res) {
     var _a = req.body, name = _a.name, email = _a.email, phone = _a.phone, password = _a.password;
     if (!email && !phone) {
         res.status(400);
@@ -47,7 +47,7 @@ usersRouter.post("/register", function (req, res) {
         db.close()["catch"](function (err) { });
     });
 });
-usersRouter.post("/login", function (req, res) {
+router.post("/login", function (req, res) {
     var _a = req.body, email = _a.email, phone = _a.phone, password = _a.password;
     if (email == null && phone == null) {
         res.status(400);
@@ -78,10 +78,8 @@ usersRouter.post("/login", function (req, res) {
         db.close();
     });
 });
-usersRouter.get("/user", function (req, res) {
+router.get("/user", function (req, res) {
 });
-usersRouter["delete"]("/user", function (req, res) {
+router["delete"]("/user", function (req, res) {
 });
-function authorize(req, res, next) {
-}
-exports.authorize = authorize;
+//# sourceMappingURL=users.js.map

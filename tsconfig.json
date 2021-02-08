@@ -4,7 +4,7 @@
         "allowJs": true,
         "target": "ES3",
         "moduleResolution": "Node",
-        
+        "sourceMap": true
     },
     "include": [
         "./src/**/*"

@@ -1,7 +1,7 @@
 import { Database } from "../data/Database";
 type UserIdentifier = {
-    email? : string,
-    phone? : string
+    email?: string,
+    phone?: string
 }
 async function getUser(db: Database, { email, phone }: UserIdentifier) {
     let dbPromise = null;
@@ -28,4 +28,5 @@ async function isDuplicateUser(db: Database, { email, phone }: UserIdentifier) {
             }
         })
 }
-export {getUser, isDuplicateUser}
+export { getUser, isDuplicateUser }
+export type { UserIdentifier }

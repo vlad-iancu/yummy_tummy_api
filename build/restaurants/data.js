@@ -36,53 +36,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.Database = exports.defaultConfig = void 0;
-var mysql_1 = require("mysql");
-var dotenv = require('dotenv');
-dotenv.config();
-var defaultConfig = {
-    host: "localhost",
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME
-};
-exports.defaultConfig = defaultConfig;
-var Database = /** @class */ (function () {
-    function Database(config) {
-        if (config)
-            this.connection = mysql_1.createConnection(config);
-        else
-            this.connection = mysql_1.createConnection(defaultConfig);
-    }
-    Database.prototype.query = function (sql, args) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                return [2 /*return*/, new Promise(function (resolve, reject) {
-                        _this.connection.query(sql, args, function (err, rows) {
-                            if (err) {
-                                reject(err);
-                            }
-                            else {
-                                resolve(rows);
-                            }
-                        });
-                    })];
-            });
+exports.getRestaurants = void 0;
+function getRestaurants(db, _a) {
+    var q = _a.q, page = _a.page, pageSize = _a.pageSize;
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_b) {
+            if (q)
+                return [2 /*return*/, db.query("select id, name, match(name) against(?) as relevance from restaurant order by relevance desc, id asc LIMIT ? OFFSET ?", [q, pageSize, pageSize * (page - 1)])];
+            else
+                return [2 /*return*/, db.query("select id, name from restaurant order by id asc LIMIT ? OFFSET ?", [pageSize, pageSize * (page - 1)])];
+            return [2 /*return*/];
         });
-    };
-    Database.prototype.close = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.connection.end(function (err) {
-                if (err)
-                    reject(err);
-                else
-                    resolve(null);
-            });
-        });
-    };
-    return Database;
-}());
-exports.Database = Database;
-//# sourceMappingURL=Database.js.map
+    });
+}
+exports.getRestaurants = getRestaurants;
+//# sourceMappingURL=data.js.map
