@@ -21,5 +21,6 @@ CREATE TABLE restaurant(
 	id INT PRIMARY KEY NOT NULL,
     name VARCHAR(64),
     location_id INT,
-    CONSTRAINT FK_RESTAURANT_LOCATION FOREIGN KEY(location_id) REFERENCES location(id)
+    CONSTRAINT FK_RESTAURANT_LOCATION FOREIGN KEY(location_id) REFERENCES location(id),
+    FULLTEXT(name)
 );
