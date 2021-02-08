@@ -109,10 +109,10 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
-
+.vscode
 # Ignores REST Client exetnsion files
 *.http
-
+build
 #Ignores Certificates
 *.cert
 *.key
