@@ -3,11 +3,11 @@ import { authorize } from '../auth/authorize'
 import { urlencoded } from 'body-parser'
 import { getRestaurants } from './data'
 import { Database } from '../data/Database'
-import * as admin from 'firebase-admin'
-let serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_FILE)
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-})
+//import * as admin from 'firebase-admin'
+//let serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_FILE)
+//admin.initializeApp({
+//    credential: admin.credential.cert(serviceAccount)
+//})
 const router = express.Router()
 interface SearchQuery {
     q?: string,
