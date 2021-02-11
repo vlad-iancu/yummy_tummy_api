@@ -5,7 +5,8 @@ import { verify } from 'jsonwebtoken'
 import { UserIdentifier } from './data'
 import { compare } from 'bcrypt'
 function authorize(req: express.Request, res: express.Response, next: express.NextFunction) {
-    let token = req.headers.authorization.split(' ')[1]
+    let token = req.headers.authorization?.split(' ')[1]
+    if(!token) {res.status(401); res.send({message: "No authorization token found"})}
     let data = verify(token, process.env.JWT_SECRET) as any
     let password: string = data.password;
     let id = data as UserIdentifier;
@@ -21,11 +22,12 @@ function authorize(req: express.Request, res: express.Response, next: express.Ne
                 compare(password, result[0].password)
                     .then(passwordMatches => {
                         if (passwordMatches) {
-                            req.body.userId = result[0].id
+                            let {password, ...user} = result[0]
+                            req.body.user = user
                             next()
                         }
                         else {
-                            res.status(403)
+                            res.status(401)
                             res.send({ message: "Incorrect password" })
                         }
                     })

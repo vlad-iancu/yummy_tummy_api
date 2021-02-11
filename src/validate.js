@@ -4,6 +4,10 @@ function createValidator(specs) {
     return function (req, res, next) {
         let error = false
         let route = specs.filter((route) => route.method === req.method && req.path === route.path)[0]
+        if(!route) {
+            next()
+            return
+        }
         let data = req.body
         route.params.forEach(({ name, type, presence, content }) => {
             if (data[name] == null && presence === "MANDATORY" && !error) {

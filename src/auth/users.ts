@@ -1,18 +1,19 @@
 
 import * as express from 'express'
 import {Database} from '../data/Database'
+import { authorize } from './authorize'
 let bodyParser = require('body-parser')
 let bcrypt = require('bcrypt')
 let validation = require('../validate')
 let files = require('fs')
 let path = require('path')
 let jwt = require('jsonwebtoken')
+let listEndpoints = require('express-list-endpoints')
 
 import { getUser, isDuplicateUser } from './data'
 const router = express.Router();
-
 router.use(bodyParser.json())
-console.log(__dirname)
+router.use(bodyParser.urlencoded())
 
 let validator = validation.createValidator(validation.specs)
 router.use(validator)
@@ -98,8 +99,9 @@ router.post("/login", (req: express.Request, res: express.Response) => {
         })
 })
 
-router.get("/user", (req: express.Request, res: express.Response) => {
-
+router.get("/user", authorize, (req: express.Request, res: express.Response) => {
+    let db = new Database();
+    res.send(req.body.user)
 })
 
 router.delete("/user", (req: express.Request, res: express.Response) => {

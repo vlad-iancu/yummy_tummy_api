@@ -53,5 +53,10 @@
                 "presence": "MANDATORY"
             }
         ]
+    },
+    {
+        "path": "/user",
+        "method": "GET",
+        "params":[]
     }
 ]
