@@ -31,7 +31,7 @@ type LoginRequest = {
     phone?: string,
     password: string
 }
-router.post("/register", (req: express.Request, res: express.Response) => {
+router.post("/register", validator, (req: express.Request, res: express.Response) => {
 
         let { name, email, phone, password } = req.body;
         if (!email && !phone) {
@@ -66,7 +66,7 @@ router.post("/register", (req: express.Request, res: express.Response) => {
             })
     })
 
-router.post("/login", (req: express.Request, res: express.Response) => {
+router.post("/login", validator, (req: express.Request, res: express.Response) => {
     let { email, phone, password }: LoginRequest = req.body;
     if (email == null && phone == null) {
         res.status(400);
@@ -101,7 +101,7 @@ router.post("/login", (req: express.Request, res: express.Response) => {
         })
 })
 
-router.get("/user", authorize, (req: express.Request, res: express.Response) => {
+router.get("/user", validator, authorize, (req: express.Request, res: express.Response) => {
     let db = new Database();
     res.send(req.body.user)
 })
