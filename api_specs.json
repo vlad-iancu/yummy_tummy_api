@@ -2,7 +2,7 @@
     {
         "path": "/register",
         "method": "POST",
-        "params":
+        "body":
         [
             {
                 "name": "name",
@@ -33,7 +33,7 @@
     {
         "path": "/login",
         "method": "POST",
-        "params":
+        "body":
         [
             {
                 "name": "email",
@@ -57,6 +57,27 @@
     {
         "path": "/user",
         "method": "GET",
-        "params":[]
+        "body":[]
+    },
+    {
+        "path": "/restaurants",
+        "method": "GET",
+        "params": [
+            {
+                "name": "q",
+                "type": "string",
+                "presence": "OPTIONAL"
+            },
+            {
+                "name": "page",
+                "type": "number",
+                "presence": "OPTIONAL"
+            },
+            {
+                "name": "pageSize",
+                "type": "number",
+                "presence": "OPTIONAL"
+            }
+        ]
     }
 ]

@@ -3,6 +3,8 @@ import { authorize } from '../auth/authorize'
 import { urlencoded } from 'body-parser'
 import { getRestaurants } from './data'
 import { Database } from '../data/Database'
+import bodyParser = require('body-parser')
+let validation = require('../validate')
 //import * as admin from 'firebase-admin'
 //let serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_FILE)
 //admin.initializeApp({
@@ -15,7 +17,12 @@ interface SearchQuery {
     pageSize?: number
 }
 export { SearchQuery }
-router.get("/restaurants",urlencoded({extended: false}), authorize, (req, res) => {
+
+let validator = validation.createValidator(validation.specs)
+router.use(bodyParser.json())
+router.use(bodyParser.urlencoded({extended: false}))
+
+router.get("/restaurants", validator, authorize, (req, res) => {
     let db = new Database()
     let q = req.query.q?.toString() ?? ""
     let page: number = parseInt(req.query.page?.toString() ?? "1")
