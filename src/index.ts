@@ -23,5 +23,5 @@ app.use(function (err, req: express.Request, res: express.Response, next: expres
 })
 
 https.createServer(ssl.credentials, app).listen(process.env.PORT, () => {
-    console.log("App listening on https://localhost");
+    console.log(`App listening on https://localhost:${process.env.PORT}`);
 })

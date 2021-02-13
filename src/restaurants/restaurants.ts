@@ -5,11 +5,7 @@ import { getRestaurants } from './data'
 import { Database } from '../data/Database'
 import bodyParser = require('body-parser')
 let validation = require('../validate')
-//import * as admin from 'firebase-admin'
-//let serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_FILE)
-//admin.initializeApp({
-//    credential: admin.credential.cert(serviceAccount)
-//})
+
 const router = express.Router()
 interface SearchQuery {
     q?: string,
@@ -20,7 +16,7 @@ export { SearchQuery }
 
 let validator = validation.createValidator(validation.specs)
 router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({extended: false}))
+router.use(bodyParser.urlencoded({ extended: false }))
 
 router.get("/restaurants", validator, authorize, (req, res) => {
     let db = new Database()
@@ -28,17 +24,17 @@ router.get("/restaurants", validator, authorize, (req, res) => {
     let page: number = parseInt(req.query.page?.toString() ?? "1")
     let pageSize: number = parseInt(req.query.pageSize?.toString() ?? "2")
 
-    getRestaurants(db, {q, page, pageSize})
-    .then(result => {
-        res.send({message: "ok", restaurants: result.map(({relevance,...obj}) => obj)})
-    })
-    .catch(err => {
-        res.status(500)
-        res.send({message: "Could not connect to the database"})
-    })
-    .finally(() => {
-        db.close()
-    })
+    getRestaurants(db, { q, page, pageSize })
+        .then(result => {
+            res.send({ message: "ok", restaurants: result.map(({ relevance, ...obj }) => obj) })
+        })
+        .catch(err => {
+            res.status(500)
+            res.send({ message: "Could not connect to the database" })
+        })
+        .finally(() => {
+            db.close()
+        })
 })
 
-export { router as restaurantsRouter}
+export { router as restaurantsRouter }

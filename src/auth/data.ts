@@ -19,7 +19,6 @@ async function getUser(db: Database, { email, phone }: UserIdentifier) {
 }
 
 async function isDuplicateUser(db: Database, { email, phone }: UserIdentifier) {
-    let dbPromise = null
     return db.query("SELECT email, phone from user WHERE (email = ? OR phone = ?)", [email, phone])
         .then(result => {
             return {
@@ -28,5 +27,8 @@ async function isDuplicateUser(db: Database, { email, phone }: UserIdentifier) {
             }
         })
 }
-export { getUser, isDuplicateUser }
+async function updateUser(db: Database, id: number, name: string) {
+    return db.query("UPDATE user SET name = ? where id = ?", [name, id])
+}
+export { getUser, isDuplicateUser, updateUser }
 export type { UserIdentifier }

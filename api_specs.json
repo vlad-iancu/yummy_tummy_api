@@ -60,6 +60,29 @@
         "body":[]
     },
     {
+        "path": "/user_profile",
+        "method": "PUT",
+        "body": [
+            {
+                "name": "email",
+                "type": "string",
+                "presence": "OPTIONAL",
+                "content": "email"
+            },
+            {
+                "name": "phone",
+                "type": "string",
+                "presence": "OPTIONAL",
+                "content": "phone"
+            },
+            {
+                "name": "password",
+                "type": "string",
+                "presence": "MANDATORY"
+            }
+        ]
+    },
+    {
         "path": "/restaurants",
         "method": "GET",
         "params": [
