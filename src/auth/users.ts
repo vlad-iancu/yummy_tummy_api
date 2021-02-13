@@ -130,7 +130,7 @@ router.put("/user_profile", validator, (req: express.Request, res: express.Respo
                         if (result) {
                             let promises: Array<Promise<any>> = []
                             promises.push(firebaseApp.storage().bucket()
-                                .file(`userProfile_id${req.body.value}.txt`)
+                                .file(`userProfile_id${user.id}.txt`)
                                 .save(file.data))
                             promises.push(updateUser(db, user.id, name))
                             return Promise.all(promises)
