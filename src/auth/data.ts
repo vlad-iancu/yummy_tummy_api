@@ -14,7 +14,8 @@ interface User {
     id: number,
     name: string,
     phone?: string
-    email?: string
+    email?: string,
+    photoPath?: string
 }
 type UserAttributes = {
     name: string,
@@ -23,9 +24,9 @@ type UserAttributes = {
     password?: string
 }
 async function getUser(
-    db: Database, 
+    db: Database,
     { email, phone, password }: UserIdentifier,
-    message: string = "Could not find any user with the provided credentials" ): Promise<User> {
+    message: string = "Could not find any user with the provided credentials"): Promise<User> {
     let dbPromise = null;
     if (email)
         if (phone) {
@@ -43,12 +44,25 @@ async function getUser(
     let match = await compare(password, user.password)
     if (!match)
         throw "Incorrect Password"
-
+    user.password = undefined
     return user
 
 }
+async function getUserProfile(
+    db: Database,
+    { email, phone, password }: UserIdentifier,
+    message: string = "Could not find any user with the provided credentials"): Promise<User & { photoUrl: string }> {
+    let user = await getUser(db, { email, phone, password }, message)
+    console.log(user.photoPath)
+    let photoUrl = (await firebaseApp.storage().bucket()
+        .file(user.photoPath).getSignedUrl({
+            action: "read",
+            expires: "03-09-2491"
+        }))[0]
+    return { photoUrl, ...user }
+}
 
-async function isDuplicateUser(db: Database, { email, phone }: Omit<UserIdentifier,"password"> ) {
+async function isDuplicateUser(db: Database, { email, phone }: Omit<UserIdentifier, "password">) {
     return db.query("SELECT email, phone from user WHERE (email = ? OR phone = ?)", [email, phone])
         .then(result => {
             return {
@@ -62,20 +76,22 @@ async function updateUser(db: Database, id: number, name: string) {
 }
 async function updateUserProfile(db: Database, id: number, name: string, file: UploadedFile) {
     let extension = (file.mimetype.match(/(png)|(jpe?g)/))[0]
+    let photoPath = `userProfile_${id}.${extension}`
     let promises: Array<Promise<any>> = []
     promises.push(
         firebaseApp.storage().bucket()
-            .file(`userProfile_id${id}.${extension}`)
+            .file(photoPath)
             .save(file.data)
     )
-    promises.push(db.query("UPDATE user SET name = ? where id = ?", [name, id]))
+    promises.push(db.query("UPDATE user SET name = ?, photoPath = ? where id = ?",
+        [name, photoPath, id]))
     return Promise.all(promises)
 }
-async function addUser(db: Database, {name, password, email, phone}: UserAttributes): Promise<User> {
-    let result = await db.query("INSERT INTO user(name, password, email, phone) VALUES(?,?,?,?)", 
-    [name, password, email, phone])
-    if(!result.insertId) throw "Could not insert the user"
-    return {name, email, phone, id: result.insertId}
+async function addUser(db: Database, { name, password, email, phone }: UserAttributes): Promise<User> {
+    let result = await db.query("INSERT INTO user(name, password, email, phone) VALUES(?,?,?,?)",
+        [name, password, email, phone])
+    if (!result.insertId) throw "Could not insert the user"
+    return { name, email, phone, id: result.insertId }
 }
-export { getUser, isDuplicateUser, updateUser, updateUserProfile, addUser }
+export { getUser, isDuplicateUser, updateUser, updateUserProfile, addUser, getUserProfile }
 export type { UserIdentifier, UserAuthentication }

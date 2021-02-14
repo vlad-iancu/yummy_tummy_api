@@ -3,7 +3,7 @@ import { Database } from '../data/Database'
 import { authorize } from './authorize'
 import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
-import { addUser, getUser, isDuplicateUser, updateUserProfile } from './data'
+import { addUser, getUser, getUserProfile, isDuplicateUser, updateUserProfile } from './data'
 import { UploadedFile } from 'express-fileupload'
 
 const router = express.Router();
@@ -79,7 +79,17 @@ router.post("/login", (req: express.Request, res: express.Response) => {
 })
 
 router.get("/user", authorize, (req: express.Request, res: express.Response) => {
-    res.send(req.body.user)
+    let db = new Database()
+    getUserProfile(db,req.body.user)
+    .then(result => {
+        res.send(result)
+    })
+    .catch((err) => {
+        res.send({message: err})
+    })
+    .finally(() => {
+        db.close()
+    })
 })
 
 type ProfileRequest = RegisterRequest
