@@ -8,34 +8,16 @@ function authorize(req: express.Request, res: express.Response, next: express.Ne
     let token = req.headers.authorization?.split(' ')[1]
     if(!token) {res.status(401); res.send({message: "No authorization token found"})}
     let data = verify(token, process.env.JWT_SECRET) as any
-    let password: string = data.password;
     let id = data as UserIdentifier;
 
     let db = new Database();
-    getUser(db, id)
+    getUser(db, id, "You need to be authenticated in order to perform this request")
         .then((result) => {
-            if (result.length < 1) {
-                res.status(403)
-                res.send({ message: "You need to be authenticated in order to perform this request" })
-            }
-            else {
-                compare(password, result[0].password)
-                    .then(passwordMatches => {
-                        if (passwordMatches) {
-                            let {password, ...user} = result[0]
-                            req.body.user = user
-                            next()
-                        }
-                        else {
-                            res.status(401)
-                            res.send({ message: "Incorrect password" })
-                        }
-                    })
-            }
+           req.body.user = result
         })
         .catch((err) => {
-            res.status(500)
-            res.send({ message: "An unexpected error has occured" })
+            let statusCode = typeof err === "string" ? 400 : 500
+            res.status(statusCode).send({ message: err })
         })
         .finally(() => {
             db.close();

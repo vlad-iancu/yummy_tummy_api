@@ -1,12 +1,21 @@
 import { restaurantRouter } from "./restaurants"
 import { authRouter } from './auth'
 import * as express from 'express'
+import {createValidator, specs} from './validate'
+import * as fileUpload from 'express-fileupload'
+
+let bodyParser = require('body-parser')
 let https = require('https')
 let app = express()
 
 let ssl = require('../ssl')
 let files = require('fs')
 let path = require('path')
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
+app.use(fileUpload())
+app.use(createValidator(specs))
 
 app.use(authRouter);
 app.use(restaurantRouter)

@@ -106,5 +106,5 @@ function validatePhone(phone) {
     }
 }
 const specs = JSON.parse(files.readFileSync(path.resolve("./api_specs.json")))
-module.exports.createValidator = createValidator
-module.exports.specs = specs
+export { specs }
+export { createValidator }
