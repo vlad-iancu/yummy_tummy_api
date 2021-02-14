@@ -14,11 +14,7 @@ interface SearchQuery {
 }
 export { SearchQuery }
 
-let validator = validation.createValidator(validation.specs)
-router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: false }))
-
-router.get("/restaurants", validator, authorize, (req, res) => {
+router.get("/restaurants", authorize, (req, res) => {
     let db = new Database()
     let q = req.query.q?.toString() ?? ""
     let page: number = parseInt(req.query.page?.toString() ?? "1")

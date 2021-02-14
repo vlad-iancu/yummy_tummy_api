@@ -14,6 +14,7 @@ function authorize(req: express.Request, res: express.Response, next: express.Ne
     getUser(db, id, "You need to be authenticated in order to perform this request")
         .then((result) => {
            req.body.user = result
+           next()
         })
         .catch((err) => {
             let statusCode = typeof err === "string" ? 400 : 500
