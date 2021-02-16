@@ -19,7 +19,7 @@ CREATE TABLE location(
 );
 
 CREATE TABLE restaurant(
-	id INT PRIMARY KEY NOT NULL,
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(64),
     location_id INT,
     CONSTRAINT FK_RESTAURANT_LOCATION FOREIGN KEY(location_id) REFERENCES location(id),
@@ -45,7 +45,7 @@ INSERT INTO location VALUES(16, 'Lisbon');
 INSERT INTO location VALUES(17, 'Tokio');
 INSERT INTO location VALUES(18, 'Taipei');
 INSERT INTO location VALUES(19, 'Houston');
-INSERT INTO location VALUES(19, 'London');
+INSERT INTO location VALUES(20, 'London');
 
 INSERT INTO restaurant(name, location_id) VALUES('Tony\'s Shaorma', 1);
 INSERT INTO restaurant(name, location_id) VALUES('Marie\'s Burgers', 1);

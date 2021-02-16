@@ -74,17 +74,29 @@ async function isDuplicateUser(db: Database, { email, phone }: Omit<UserIdentifi
 async function updateUser(db: Database, id: number, name: string) {
     return db.query("UPDATE user SET name = ? where id = ?", [name, id])
 }
-async function updateUserProfile(db: Database, id: number, name: string, file: UploadedFile) {
+async function updateUserProfile(db: Database, id: number, name?: string, file?: UploadedFile) {
     let extension = (file.mimetype.match(/(png)|(jpe?g)/))[0]
     let photoPath = `userProfile_${id}.${extension}`
     let promises: Array<Promise<any>> = []
-    promises.push(
-        firebaseApp.storage().bucket()
-            .file(photoPath)
-            .save(file.data)
-    )
-    promises.push(db.query("UPDATE user SET name = ?, photoPath = ? where id = ?",
-        [name, photoPath, id]))
+    let user = (await db.query("SELECT * FROM user where id = ?", [id]))[0]
+    if (file) {
+        promises.push(
+            firebaseApp.storage().bucket()
+                .file(user.photoPath)
+                .delete({ ignoreNotFound: true })
+        )
+        promises.push(
+            firebaseApp.storage().bucket()
+                .file(photoPath)
+                .save(file.data)
+        )
+        promises.push(db.query("UPDATE user SET photoPath = ? where id = ?",
+            [photoPath, id]))
+    }
+    if (name) {
+        promises.push(db.query("UPDATE user SET name = ? where id = ?",
+            [name, id]))
+    }
     return Promise.all(promises)
 }
 async function addUser(db: Database, { name, password, email, phone }: UserAttributes): Promise<User> {

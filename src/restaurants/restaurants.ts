@@ -1,10 +1,7 @@
 import * as express from 'express'
 import { authorize } from '../auth/authorize'
-import { urlencoded } from 'body-parser'
 import { getRestaurants } from './data'
 import { Database } from '../data/Database'
-import bodyParser = require('body-parser')
-let validation = require('../validate')
 
 const router = express.Router()
 interface SearchQuery {
@@ -24,7 +21,7 @@ router.get("/restaurants", authorize, (req, res) => {
         .then(result => {
             res.send({ message: "ok", restaurants: result.map(({ relevance, ...obj }) => obj) })
         })
-        .catch(err => {
+        .catch(() => {
             res.status(500)
             res.send({ message: "Could not connect to the database" })
         })
