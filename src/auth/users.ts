@@ -94,7 +94,7 @@ router.get("/user", authorize, (req: express.Request, res: express.Response) => 
 
 type ProfileRequest = RegisterRequest
 router.put("/user_profile", (req: express.Request, res: express.Response) => {
-    let file: UploadedFile = req.files.profilePicture as UploadedFile
+    let file: UploadedFile = req.files?.profilePicture as UploadedFile | null
     let { name, email, phone, password }: ProfileRequest = req.body
     let db = new Database()
     getUser(db, { email, phone, password })

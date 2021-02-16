@@ -75,11 +75,12 @@ async function updateUser(db: Database, id: number, name: string) {
     return db.query("UPDATE user SET name = ? where id = ?", [name, id])
 }
 async function updateUserProfile(db: Database, id: number, name?: string, file?: UploadedFile) {
-    let extension = (file.mimetype.match(/(png)|(jpe?g)/))[0]
-    let photoPath = `userProfile_${id}.${extension}`
+
     let promises: Array<Promise<any>> = []
     let user = (await db.query("SELECT * FROM user where id = ?", [id]))[0]
     if (file) {
+        let extension = (file.mimetype.match(/(png)|(jpe?g)/))[0]
+        let photoPath = `userProfile_${id}.${extension}`
         promises.push(
             firebaseApp.storage().bucket()
                 .file(user.photoPath)
