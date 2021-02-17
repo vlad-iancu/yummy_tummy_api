@@ -3,7 +3,7 @@ import { Database } from '../data/Database'
 import { authorize } from './authorize'
 import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
-import { addUser, getUser, getUserProfile, isDuplicateUser, updateUserProfile } from './data'
+import { addUser, deleteProfilePicture, getUser, getUserProfile, isDuplicateUser, updateUserProfile } from './data'
 import { UploadedFile } from 'express-fileupload'
 
 const router = express.Router();
@@ -80,16 +80,16 @@ router.post("/login", (req: express.Request, res: express.Response) => {
 
 router.get("/user", authorize, (req: express.Request, res: express.Response) => {
     let db = new Database()
-    getUserProfile(db,req.body.user)
-    .then(result => {
-        res.send(result)
-    })
-    .catch((err) => {
-        res.send({message: err})
-    })
-    .finally(() => {
-        db.close()
-    })
+    getUserProfile(db, req.body.user)
+        .then(result => {
+            res.send(result)
+        })
+        .catch((err) => {
+            res.send({ message: err })
+        })
+        .finally(() => {
+            db.close()
+        })
 })
 
 type ProfileRequest = RegisterRequest
@@ -112,6 +112,23 @@ router.put("/user_profile", (req: express.Request, res: express.Response) => {
         .finally(() => {
             db.close()
         })
+})
+router.delete("/user_profile_picture", (req: express.Request, res: express.Response) => {
+    let { email, phone, password }: ProfileRequest = req.body
+    let db = new Database()
+    getUser(db, { email, phone, password })
+        .then(async user => {
+            await deleteProfilePicture(db, user.photoPath)
+            res.send({message: "Profile picture deleted"})
+        })
+        .catch(err => {
+            let statusCode = typeof err === "string" ? 400 : 500
+            res.status(statusCode).send({ message: err })
+        })
+        .finally(() => {
+            db.close()
+        })
+
 })
 
 export { router as usersRouter }

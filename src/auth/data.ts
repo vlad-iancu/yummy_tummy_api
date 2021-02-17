@@ -54,11 +54,13 @@ async function getUserProfile(
     message: string = "Could not find any user with the provided credentials"): Promise<User & { photoUrl: string }> {
     let user = await getUser(db, { email, phone, password }, message)
     console.log(user.photoPath)
-    let photoUrl = (await firebaseApp.storage().bucket()
-        .file(user.photoPath).getSignedUrl({
-            action: "read",
-            expires: "03-09-2491"
-        }))[0]
+    let photoUrl: string = "";
+    if (user.photoPath)
+        photoUrl = (await firebaseApp.storage().bucket()
+            .file(user.photoPath).getSignedUrl({
+                action: "read",
+                expires: "03-09-2491"
+            }))[0]
     return { photoUrl, ...user }
 }
 
@@ -81,11 +83,13 @@ async function updateUserProfile(db: Database, id: number, name?: string, file?:
     if (file) {
         let extension = (file.mimetype.match(/(png)|(jpe?g)/))[0]
         let photoPath = `userProfile_${id}.${extension}`
-        promises.push(
-            firebaseApp.storage().bucket()
-                .file(user.photoPath)
-                .delete({ ignoreNotFound: true })
-        )
+        if (user.photoPath)
+            promises.push(
+                firebaseApp.storage().bucket()
+                    .file(user.photoPath)
+                    .delete({ ignoreNotFound: true })
+            )
+
         promises.push(
             firebaseApp.storage().bucket()
                 .file(photoPath)
@@ -106,5 +110,17 @@ async function addUser(db: Database, { name, password, email, phone }: UserAttri
     if (!result.insertId) throw "Could not insert the user"
     return { name, email, phone, id: result.insertId }
 }
-export { getUser, isDuplicateUser, updateUser, updateUserProfile, addUser, getUserProfile }
+async function deleteProfilePicture(db: Database, photoPath: string): Promise<any> {
+    let promises: Array<Promise<any>> = []
+    if (photoPath)
+        promises.push(
+            firebaseApp.storage()
+                .bucket()
+                .file(photoPath)
+                .delete({ ignoreNotFound: false })
+        )
+    promises.push(db.query("UPDATE user SET photoPath = null WHERE photoPath = ?", [photoPath]))
+    return Promise.all(promises)
+}
+export { getUser, isDuplicateUser, updateUser, updateUserProfile, addUser, getUserProfile, deleteProfilePicture }
 export type { UserIdentifier, UserAuthentication }
