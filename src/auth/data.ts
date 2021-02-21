@@ -77,7 +77,6 @@ async function updateUser(db: Database, id: number, name: string) {
     return db.query("UPDATE user SET name = ? where id = ?", [name, id])
 }
 async function updateUserProfile(db: Database, id: number, name?: string, file?: UploadedFile) {
-
     let promises: Array<Promise<any>> = []
     let user = (await db.query("SELECT * FROM user where id = ?", [id]))[0]
     if (file) {

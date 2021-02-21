@@ -81,8 +81,8 @@ router.post("/login", (req: express.Request, res: express.Response) => {
 router.get("/user", authorize, (req: express.Request, res: express.Response) => {
     let db = new Database()
     getUserProfile(db, req.body.user)
-        .then(result => {
-            res.send(result)
+        .then(user => {
+            res.send(user)
         })
         .catch((err) => {
             res.send({ message: err })
@@ -100,10 +100,8 @@ router.put("/user_profile", (req: express.Request, res: express.Response) => {
     getUser(db, { email, phone, password })
         .then(async result => {
             let id = result.id
-            return updateUserProfile(db, id, name, file)
-        })
-        .then(() => {
-            res.send({ message: "User profile updated" })
+            await updateUserProfile(db, id, name, file)
+            res.send(await getUserProfile(db, {email, phone, password}) )
         })
         .catch(err => {
             let statusCode = typeof err === "string" ? 400 : 500
