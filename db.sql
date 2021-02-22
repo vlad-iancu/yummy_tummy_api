@@ -22,6 +22,8 @@ CREATE TABLE restaurant(
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(64),
     location_id INT,
+    thumbnailPath VARCHAR(128),
+    photoPath VARCHAR(128),
     CONSTRAINT FK_RESTAURANT_LOCATION FOREIGN KEY(location_id) REFERENCES location(id),
     FULLTEXT(name)
 );

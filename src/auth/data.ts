@@ -81,7 +81,7 @@ async function updateUserProfile(db: Database, id: number, name?: string, file?:
     let user = (await db.query("SELECT * FROM user where id = ?", [id]))[0]
     if (file) {
         let extension = (file.mimetype.match(/(png)|(jpe?g)/))[0]
-        let photoPath = `userProfile_${id}.${extension}`
+        let photoPath = `profile/user_${id}.${extension}`
         if (user.photoPath)
             promises.push(
                 firebaseApp.storage().bucket()

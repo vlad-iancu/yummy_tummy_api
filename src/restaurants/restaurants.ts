@@ -19,7 +19,7 @@ router.get("/restaurants", authorize, (req, res) => {
 
     getRestaurants(db, { q, page, pageSize })
         .then(result => {
-            res.send({ message: "ok", restaurants: result.map(({ relevance, ...obj }) => obj) })
+            res.send({ message: "ok", restaurants: result })
         })
         .catch(() => {
             res.status(500)
