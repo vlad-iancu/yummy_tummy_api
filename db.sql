@@ -130,4 +130,5 @@ INSERT INTO restaurant(name, location_id) VALUES('Bazaar Farmhouse',  20);
 INSERT INTO restaurant(name, location_id) VALUES('Sweet Table Provisions', 20);
 INSERT INTO restaurant(name, location_id) VALUES('Handsome Rabbit Chophouse',    20);
 
-UPDATE restaurant SET photoPath = 'restaurants/photo/restaurant' + (id % 10 + 1) + '.jpeg'
+UPDATE restaurant SET photoPath = concat('restaurants/photo/restaurant', (id % 10 + 1), '.jpeg');
+UPDATE restaurant SET thumbnail = concat('restaurants/thumbnail/restaurant', (id % 10 + 1), '.jpeg');
