@@ -58,85 +58,85 @@ INSERT INTO location VALUES(18, 'Taipei');
 INSERT INTO location VALUES(19, 'Houston');
 INSERT INTO location VALUES(20, 'London');
 
-INSERT INTO restaurant(name, location_id) VALUES('Tony\'s Shaorma', 1);
-INSERT INTO restaurant(name, location_id) VALUES('Marie\'s Burgers', 1);
-INSERT INTO restaurant(name, location_id) VALUES('Tom\'s Salads', 1);
+INSERT INTO restaurant(name, locationId) VALUES('Tony\'s Shaorma', 1);
+INSERT INTO restaurant(name, locationId) VALUES('Marie\'s Burgers', 1);
+INSERT INTO restaurant(name, locationId) VALUES('Tom\'s Salads', 1);
 
-INSERT INTO restaurant(name, location_id) VALUES('Taco Bell', 2);
-INSERT INTO restaurant(name, location_id) VALUES('Brazilian Cuisine', 2);
-INSERT INTO restaurant(name, location_id) VALUES('Voila! Cucina', 2);
+INSERT INTO restaurant(name, locationId) VALUES('Taco Bell', 2);
+INSERT INTO restaurant(name, locationId) VALUES('Brazilian Cuisine', 2);
+INSERT INTO restaurant(name, locationId) VALUES('Voila! Cucina', 2);
 
-INSERT INTO restaurant(name, location_id) VALUES('Saladbox', 3);
-INSERT INTO restaurant(name, location_id) VALUES('Best Junk Food', 3);
-INSERT INTO restaurant(name, location_id) VALUES('Cody\'s Pizza', 3);
+INSERT INTO restaurant(name, locationId) VALUES('Saladbox', 3);
+INSERT INTO restaurant(name, locationId) VALUES('Best Junk Food', 3);
+INSERT INTO restaurant(name, locationId) VALUES('Cody\'s Pizza', 3);
 
-INSERT INTO restaurant(name, location_id) VALUES('Lucky on Provisions', 4);
-INSERT INTO restaurant(name, location_id) VALUES('Saffron Blossom', 4);
-INSERT INTO restaurant(name, location_id) VALUES('Garden House', 4);
+INSERT INTO restaurant(name, locationId) VALUES('Lucky on Provisions', 4);
+INSERT INTO restaurant(name, locationId) VALUES('Saffron Blossom', 4);
+INSERT INTO restaurant(name, locationId) VALUES('Garden House', 4);
 
-INSERT INTO restaurant(name, location_id) VALUES('Howling Honeybee Kitchen', 5);
-INSERT INTO restaurant(name, location_id) VALUES('Latern Bar and Grille', 5);
-INSERT INTO restaurant(name, location_id) VALUES('Golden Bliss Eatery', 5);
+INSERT INTO restaurant(name, locationId) VALUES('Howling Honeybee Kitchen', 5);
+INSERT INTO restaurant(name, locationId) VALUES('Latern Bar and Grille', 5);
+INSERT INTO restaurant(name, locationId) VALUES('Golden Bliss Eatery', 5);
 
-INSERT INTO restaurant(name, location_id) VALUES('Mystic Fox Supper Club',  6);
-INSERT INTO restaurant(name, location_id) VALUES('Bliss Canteen', 6);
-INSERT INTO restaurant(name, location_id) VALUES('New Dahila Ristorante', 6);
+INSERT INTO restaurant(name, locationId) VALUES('Mystic Fox Supper Club',  6);
+INSERT INTO restaurant(name, locationId) VALUES('Bliss Canteen', 6);
+INSERT INTO restaurant(name, locationId) VALUES('New Dahila Ristorante', 6);
 
-INSERT INTO restaurant(name, location_id) VALUES('Gourmet on Str.Ferdinand',  7);
-INSERT INTO restaurant(name, location_id) VALUES('Bold Lighthouse', 7);
-INSERT INTO restaurant(name, location_id) VALUES('Craveable Pines Cookery', 7);
+INSERT INTO restaurant(name, locationId) VALUES('Gourmet on Str.Ferdinand',  7);
+INSERT INTO restaurant(name, locationId) VALUES('Bold Lighthouse', 7);
+INSERT INTO restaurant(name, locationId) VALUES('Craveable Pines Cookery', 7);
 
-INSERT INTO restaurant(name, location_id) VALUES('Grove Provisions',  8);
-INSERT INTO restaurant(name, location_id) VALUES('Pickled Fox Bistro', 8);
-INSERT INTO restaurant(name, location_id) VALUES('Follow the Charm Cookery',    8);
+INSERT INTO restaurant(name, locationId) VALUES('Grove Provisions',  8);
+INSERT INTO restaurant(name, locationId) VALUES('Pickled Fox Bistro', 8);
+INSERT INTO restaurant(name, locationId) VALUES('Follow the Charm Cookery',    8);
 
-INSERT INTO restaurant(name, location_id) VALUES('Savory Blaze Farmhouse',  9);
-INSERT INTO restaurant(name, location_id) VALUES('Loyal Nomad & Co.', 9);
-INSERT INTO restaurant(name, location_id) VALUES('New Kettle House',    9);
+INSERT INTO restaurant(name, locationId) VALUES('Savory Blaze Farmhouse',  9);
+INSERT INTO restaurant(name, locationId) VALUES('Loyal Nomad & Co.', 9);
+INSERT INTO restaurant(name, locationId) VALUES('New Kettle House',    9);
 
-INSERT INTO restaurant(name, location_id) VALUES('The Oak Roadhouse',  10);
-INSERT INTO restaurant(name, location_id) VALUES('Moonlit Wish Lounge', 10);
-INSERT INTO restaurant(name, location_id) VALUES('Lost Thyme Cucina',    10);
+INSERT INTO restaurant(name, locationId) VALUES('The Oak Roadhouse',  10);
+INSERT INTO restaurant(name, locationId) VALUES('Moonlit Wish Lounge', 10);
+INSERT INTO restaurant(name, locationId) VALUES('Lost Thyme Cucina',    10);
 
-INSERT INTO restaurant(name, location_id) VALUES('Mellow Fete Roadhouse',  11);
-INSERT INTO restaurant(name, location_id) VALUES('Farmer\'s Falcon Restaurant', 11);
-INSERT INTO restaurant(name, location_id) VALUES('Crafted Sails Provisions',    11);
+INSERT INTO restaurant(name, locationId) VALUES('Mellow Fete Roadhouse',  11);
+INSERT INTO restaurant(name, locationId) VALUES('Farmer\'s Falcon Restaurant', 11);
+INSERT INTO restaurant(name, locationId) VALUES('Crafted Sails Provisions',    11);
 
-INSERT INTO restaurant(name, location_id) VALUES('Enchanted Fire Lounge',  12);
-INSERT INTO restaurant(name, location_id) VALUES('Southern Bite House', 12);
-INSERT INTO restaurant(name, location_id) VALUES('Proud Taste Farmhouse',    12);
+INSERT INTO restaurant(name, locationId) VALUES('Enchanted Fire Lounge',  12);
+INSERT INTO restaurant(name, locationId) VALUES('Southern Bite House', 12);
+INSERT INTO restaurant(name, locationId) VALUES('Proud Taste Farmhouse',    12);
 
-INSERT INTO restaurant(name, location_id) VALUES('Crimson Harvest Pubhouse',  13);
-INSERT INTO restaurant(name, location_id) VALUES('Marie\'s Burgers', 13);
-INSERT INTO restaurant(name, location_id) VALUES('Saffron Spoon Pub',    13);
+INSERT INTO restaurant(name, locationId) VALUES('Crimson Harvest Pubhouse',  13);
+INSERT INTO restaurant(name, locationId) VALUES('Marie\'s Burgers', 13);
+INSERT INTO restaurant(name, locationId) VALUES('Saffron Spoon Pub',    13);
 
-INSERT INTO restaurant(name, location_id) VALUES('Rosy Pail Bar and Grill',  14);
-INSERT INTO restaurant(name, location_id) VALUES('Ciao! Cuisine', 14);
-INSERT INTO restaurant(name, location_id) VALUES('Merry Moment Cuisine',    14);
+INSERT INTO restaurant(name, locationId) VALUES('Rosy Pail Bar and Grill',  14);
+INSERT INTO restaurant(name, locationId) VALUES('Ciao! Cuisine', 14);
+INSERT INTO restaurant(name, locationId) VALUES('Merry Moment Cuisine',    14);
 
-INSERT INTO restaurant(name, location_id) VALUES('Follow the Bell Cookery',  15);
-INSERT INTO restaurant(name, location_id) VALUES('The Spoon Inn', 15);
-INSERT INTO restaurant(name, location_id) VALUES('Lost on Via Appia Cuisine',    15);
+INSERT INTO restaurant(name, locationId) VALUES('Follow the Bell Cookery',  15);
+INSERT INTO restaurant(name, locationId) VALUES('The Spoon Inn', 15);
+INSERT INTO restaurant(name, locationId) VALUES('Lost on Via Appia Cuisine',    15);
 
-INSERT INTO restaurant(name, location_id) VALUES('Moonlit Owl House',  16);
-INSERT INTO restaurant(name, location_id) VALUES('Rustic Mirror & Co.', 16);
-INSERT INTO restaurant(name, location_id) VALUES('Zebra Cucina',    16);
+INSERT INTO restaurant(name, locationId) VALUES('Moonlit Owl House',  16);
+INSERT INTO restaurant(name, locationId) VALUES('Rustic Mirror & Co.', 16);
+INSERT INTO restaurant(name, locationId) VALUES('Zebra Cucina',    16);
 
-INSERT INTO restaurant(name, location_id) VALUES('Original Palm Eatery',  17);
-INSERT INTO restaurant(name, location_id) VALUES('Charmed Platter Lodge', 17);
-INSERT INTO restaurant(name, location_id) VALUES('Great Tiger Cucina',    17);
+INSERT INTO restaurant(name, locationId) VALUES('Original Palm Eatery',  17);
+INSERT INTO restaurant(name, locationId) VALUES('Charmed Platter Lodge', 17);
+INSERT INTO restaurant(name, locationId) VALUES('Great Tiger Cucina',    17);
 
-INSERT INTO restaurant(name, location_id) VALUES('The Forest Bar and Grill',  18);
-INSERT INTO restaurant(name, location_id) VALUES('Moonshine Tractor Bar and Grill', 18);
-INSERT INTO restaurant(name, location_id) VALUES('Tilted Flame Canteen',    18);
+INSERT INTO restaurant(name, locationId) VALUES('The Forest Bar and Grill',  18);
+INSERT INTO restaurant(name, locationId) VALUES('Moonshine Tractor Bar and Grill', 18);
+INSERT INTO restaurant(name, locationId) VALUES('Tilted Flame Canteen',    18);
 
-INSERT INTO restaurant(name, location_id) VALUES('Hidden Jester Roadhouse',  19);
-INSERT INTO restaurant(name, location_id) VALUES('Sailing Alley Trattoria', 19);
-INSERT INTO restaurant(name, location_id) VALUES('Jeweled Cow Bistro',    19);
+INSERT INTO restaurant(name, locationId) VALUES('Hidden Jester Roadhouse',  19);
+INSERT INTO restaurant(name, locationId) VALUES('Sailing Alley Trattoria', 19);
+INSERT INTO restaurant(name, locationId) VALUES('Jeweled Cow Bistro',    19);
 
-INSERT INTO restaurant(name, location_id) VALUES('Bazaar Farmhouse',  20);
-INSERT INTO restaurant(name, location_id) VALUES('Sweet Table Provisions', 20);
-INSERT INTO restaurant(name, location_id) VALUES('Handsome Rabbit Chophouse',    20);
+INSERT INTO restaurant(name, locationId) VALUES('Bazaar Farmhouse',  20);
+INSERT INTO restaurant(name, locationId) VALUES('Sweet Table Provisions', 20);
+INSERT INTO restaurant(name, locationId) VALUES('Handsome Rabbit Chophouse',    20);
 
 UPDATE restaurant SET photoPath = concat('restaurants/photo/restaurant', (id % 10 + 1), '.jpeg');
 UPDATE restaurant SET thumbnailPath = concat('restaurants/thumbnail/restaurant', (id % 10 + 1), '.jpeg');
