@@ -76,14 +76,14 @@ type ValidateParams = { id: number, phoneCode?: string, emailCode?: string }
 async function validateUser(db: Database, { id, phoneCode, emailCode }: ValidateParams): Promise<any> {
     if (phoneCode) {
         let code = (await db.query("SELECT * FROM user_validation WHERE code = ?", [phoneCode]))[0]
-        if (code.expiration > getUnixTime())
+        if (code.expiration < getUnixTime())
             throw "Phone code has expired"
         await db.query("UPDATE user SET phoneCode = ? WHERE id = ? AND phoneCode = ?", [null, id, phoneCode.toUpperCase()])
         await db.query("DELETE FROM user_validation WHERE code = ?", [phoneCode])
     }
     if (emailCode) {
         let code = (await db.query("SELECT * FROM user_validation WHERE code = ?", [emailCode]))[0]
-        if (code.expiration > getUnixTime())
+        if (code.expiration < getUnixTime())
             throw "Phone code has expired"
         await db.query("UPDATE user SET emailCode = ? WHERE id = ? AND emailCode = ?", [null, id, emailCode.toUpperCase()])
         await db.query("DELETE FROM user_validation WHERE code = ?", [emailCode])
