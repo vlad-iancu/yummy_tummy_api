@@ -3,7 +3,7 @@ import { Database } from '../data/Database'
 import { authorize } from './authorize'
 import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
-import { addUser, deleteProfilePicture, getUser, getUserProfile, isDuplicateUser, updateUserProfile } from './data'
+import { addUser, deleteProfilePicture, getUser, getUserById, getUserProfile, isDuplicateUser, updateUserProfile, validateUser } from './data'
 import { UploadedFile } from 'express-fileupload'
 
 const router = express.Router();
@@ -101,7 +101,7 @@ router.put("/user_profile", (req: express.Request, res: express.Response) => {
         .then(async result => {
             let id = result.id
             await updateUserProfile(db, id, name, file)
-            res.send(await getUserProfile(db, {email, phone, password}) )
+            res.send(await getUserProfile(db, { email, phone, password }))
         })
         .catch(err => {
             let statusCode = typeof err === "string" ? 400 : 500
@@ -117,7 +117,7 @@ router.delete("/user_profile_picture", (req: express.Request, res: express.Respo
     getUser(db, { email, phone, password })
         .then(async user => {
             await deleteProfilePicture(db, user.photoPath)
-            res.send({message: "Profile picture deleted"})
+            res.send({ message: "Profile picture deleted" })
         })
         .catch(err => {
             let statusCode = typeof err === "string" ? 400 : 500
@@ -127,6 +127,26 @@ router.delete("/user_profile_picture", (req: express.Request, res: express.Respo
             db.close()
         })
 
+})
+router.post('/validate_user', (req: express.Request, res: express.Response) => {
+    let { id, phoneCode, emailCode } = req.query
+    let db = new Database()
+    getUserById(db, parseInt(id.toString()))
+        .then(async ({ id }) => {
+            await validateUser(db, {
+                id,
+                phoneCode: phoneCode?.toString(),
+                emailCode: emailCode?.toString()
+            })
+            res.send({message: "Validation successful"})
+        })
+        .catch(err => {
+            let statusCode = typeof err === "string" ? 400 : 500
+            res.status(statusCode).send({ message: err })
+        })
+        .finally(() => {
+            db.close()
+        })
 })
 
 export { router as usersRouter }

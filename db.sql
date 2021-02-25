@@ -1,6 +1,10 @@
 DROP TABLE IF EXISTS restaurant;
 DROP TABLE IF EXISTS location;
 DROP TABLE IF EXISTS user;
+CREATE TABLE user_validation(
+    code VARCHAR(16) PRIMARY KEY NOT NULL,
+    expiration INT(11)
+);
 
 CREATE TABLE user(
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -9,8 +13,12 @@ CREATE TABLE user(
     email VARCHAR(128),
     phone VARCHAR(16),
     photoPath VARCHAR(128),
+    phoneCode VARCHAR(16),
+    emailCode VARCHAR(16),
     UNIQUE(email),
-    UNIQUE(phone)
+    UNIQUE(phone),
+    CONSTRAINT FK_EMAIL_CODE FOREIGN KEY(emailCode) REFERENCES user_validation(code),
+    CONSTRAINT FK_PHONE_CODE FOREIGN KEY(phoneCode) REFERENCES user_validation(code)
 );
 
 CREATE TABLE location(
@@ -21,10 +29,10 @@ CREATE TABLE location(
 CREATE TABLE restaurant(
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(64),
-    location_id INT,
+    locationId INT,
     thumbnailPath VARCHAR(128),
     photoPath VARCHAR(128),
-    CONSTRAINT FK_RESTAURANT_LOCATION FOREIGN KEY(location_id) REFERENCES location(id),
+    CONSTRAINT FK_RESTAURANT_LOCATION FOREIGN KEY(locationId) REFERENCES location(id),
     FULLTEXT(name)
 );
 INSERT INTO user(name, password, email, phone) VALUES('Iancu Vlad', '$2b$10$FSLVtYgpPx21pjxpUPnbdOP.VtsF1BDAymK2JePjraNGNG139IOna', 'my@email.com', '0721711423');
@@ -131,4 +139,4 @@ INSERT INTO restaurant(name, location_id) VALUES('Sweet Table Provisions', 20);
 INSERT INTO restaurant(name, location_id) VALUES('Handsome Rabbit Chophouse',    20);
 
 UPDATE restaurant SET photoPath = concat('restaurants/photo/restaurant', (id % 10 + 1), '.jpeg');
-UPDATE restaurant SET thumbnail = concat('restaurants/thumbnail/restaurant', (id % 10 + 1), '.jpeg');
+UPDATE restaurant SET thumbnailPath = concat('restaurants/thumbnail/restaurant', (id % 10 + 1), '.jpeg');

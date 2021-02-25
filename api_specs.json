@@ -102,5 +102,20 @@
                 "presence": "OPTIONAL"
             }
         ]
+    },
+    {
+        "path": "/validate_user",
+        "method": "GET",
+        "params":[
+            {
+                "name": "id"
+            },
+            {
+                "name": "phoneCode"
+            },
+            {
+                "name": "phoneCode"
+            }
+        ]
     }
 ]
