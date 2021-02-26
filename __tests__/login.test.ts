@@ -117,9 +117,6 @@ describe("Login", () => {
         done()
 
     })
-    beforeEach(() => {
-        shell.exec("bash ./clear_test_db.sh", {silent: true})  
-    })
     afterEach(() => {
         shell.exec("bash ./clear_test_db.sh", {silent: true})
     })
