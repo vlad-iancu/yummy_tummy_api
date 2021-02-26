@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS restaurant;
 DROP TABLE IF EXISTS location;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS user_validation;
 CREATE TABLE user_validation(
     code VARCHAR(16) PRIMARY KEY NOT NULL,
     expiration INT(11)

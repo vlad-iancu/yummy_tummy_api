@@ -1,11 +1,13 @@
 import { restaurantRouter } from "./restaurants"
 import { authRouter } from './auth'
 import * as express from 'express'
-import {createValidator, specs} from './validate'
+import { createValidator, specs } from './validate'
 import * as fileUpload from 'express-fileupload'
 
+
+
 let bodyParser = require('body-parser')
-let https = require('https')
+import * as https from 'https'
 let app = express()
 
 let ssl = require('../ssl')
@@ -27,10 +29,12 @@ app.use(function (err, req: express.Request, res: express.Response, next: expres
         return
     } else {
         res.status(500)
-        res.send({message: "An unexpected error has occured"})
+        res.send({ message: "An unexpected error has occured" })
     }
 })
+if (process.env.NODE_ENV != "test")
+    https.createServer(ssl.credentials, app).listen(process.env.PORT, () => {
+        console.log(`App listening on https://localhost:${process.env.PORT}`);
+    })
 
-https.createServer(ssl.credentials, app).listen(process.env.PORT, () => {
-    console.log(`App listening on https://localhost:${process.env.PORT}`);
-})
+export default app
