@@ -1,7 +1,5 @@
-import { compare } from "bcrypt";
-import { time, timeStamp } from "console";
+import { compare, hash } from "bcrypt";
 import { UploadedFile } from "express-fileupload";
-import { networkInterfaces, type } from "os";
 import { Database } from "../data/Database";
 import { firebaseApp } from '../Firebase'
 type UserIdentifier = {
@@ -149,6 +147,7 @@ async function updateUserProfile(db: Database, id: number, name?: string, file?:
     return Promise.all(promises)
 }
 async function addUser(db: Database, { name, password, email, phone }: UserAttributes): Promise<User> {
+    password = await hash(password, 10)
     let result = await db.query("INSERT INTO user(name, password, email, phone) VALUES(?,?,?,?)",
         [name, password, email, phone])
     if (!result.insertId) throw "Could not insert the user"

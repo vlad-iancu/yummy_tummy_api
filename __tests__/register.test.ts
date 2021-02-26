@@ -56,7 +56,6 @@ describe("Register", () => {
         let isValid = await bcrypt.compare("parola", dbUser.password);
         expect(isValid).toBe(true)
         await db.close()
-        expect(isValid).toBe(true)
 
         done()
     })

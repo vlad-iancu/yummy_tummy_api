@@ -24,7 +24,7 @@ router.post("/register", (req: express.Request, res: express.Response) => {
         res.send();
         return;
     }
-    password = bcrypt.hashSync(password, 10);
+    //password = bcrypt.hashSync(password, 10);
     let db = new Database();
     isDuplicateUser(db, { email, phone })
         .then(result => {
