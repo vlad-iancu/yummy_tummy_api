@@ -5,7 +5,7 @@
 
 export default {
   // All imported modules in your tests should be mocked automatically
-  // automock: false,
+  automock: false,
 
   // Stop running tests after `n` failures
   // bail: 0,
@@ -15,6 +15,7 @@ export default {
 
   // Automatically clear mock calls and instances between every test
   clearMocks: true,
+
 
   // Indicates whether the coverage information should be collected while executing the test
   // collectCoverage: false,
@@ -66,20 +67,19 @@ export default {
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  // moduleDirectories: [
-  //   "node_modules"
-  // ],
+   moduleDirectories: [
+     "node_modules"
+   ],
 
   // An array of file extensions your modules use
-  // moduleFileExtensions: [
-  //   "js",
-  //   "json",
-  //   "jsx",
-  //   "ts",
-  //   "tsx",
-  //   "node"
-  // ],
-
+   moduleFileExtensions: [
+     "js",
+     "json",
+     "jsx",
+     "ts",
+     "tsx",
+     "node"
+   ],
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
 
@@ -172,7 +172,9 @@ export default {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  // transform: undefined,
+   transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
