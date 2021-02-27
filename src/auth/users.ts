@@ -1,9 +1,8 @@
 import * as express from 'express'
 import { Database } from '../data/Database'
 import { authorize } from './authorize'
-import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
-import { addUser, deleteProfilePicture, getUser, getUserById, getUserProfile, isDuplicateUser, updateUserProfile, validateUser } from './data'
+import { addUser, deleteProfilePicture, getUser, getUserById, getUserProfile, isDuplicateUser, updateUserProfile, getUserThatHasValidationCodes, validateUserCodes } from './data'
 import { UploadedFile } from 'express-fileupload'
 
 const router = express.Router();
@@ -129,24 +128,19 @@ router.delete("/user_profile_picture", (req: express.Request, res: express.Respo
 
 })
 router.post('/validate_user', (req: express.Request, res: express.Response) => {
-    let { id, phoneCode, emailCode } = req.query
+    let { phoneCode, emailCode } = req.query
     let db = new Database()
-    getUserById(db, parseInt(id.toString()))
-        .then(async ({ id }) => {
-            await validateUser(db, {
-                id,
-                phoneCode: phoneCode?.toString(),
-                emailCode: emailCode?.toString()
-            })
-            res.send({message: "Validation successful"})
-        })
-        .catch(err => {
-            let statusCode = typeof err === "string" ? 400 : 500
-            res.status(statusCode).send({ message: err })
-        })
-        .finally(() => {
-            db.close()
-        })
+    validateUserCodes(db, emailCode?.toString(), phoneCode?.toString())
+    .then(async (user) => {
+        res.send({message: "Validation successful"})
+    })
+    .catch(err => {
+        let statusCode = typeof err === "string" ? 400 : 500
+        res.status(statusCode).send({ message: err })
+    })
+    .finally(() => {
+        db.close()
+    })
 })
 
 export { router as usersRouter }

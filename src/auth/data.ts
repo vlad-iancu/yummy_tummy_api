@@ -70,26 +70,7 @@ async function getUserById(db: Database, id: number): Promise<User> {
     }
     return await user
 }
-type ValidateParams = { id: number, phoneCode?: string, emailCode?: string }
-async function validateUser(db: Database, { id, phoneCode, emailCode }: ValidateParams): Promise<any> {
-    if (phoneCode) {
-        let code = (await db.query("SELECT * FROM user_validation WHERE code = ?", [phoneCode]))[0]
-        if(!code) throw "The code is incorrect, try again"
-        if (code.expiration < getUnixTime())
-            throw "Phone code has expired"
-        await db.query("UPDATE user SET phoneCode = ? WHERE id = ? AND phoneCode = ?", [null, id, phoneCode.toUpperCase()])
-        await db.query("DELETE FROM user_validation WHERE code = ?", [phoneCode])
-    }
-    if (emailCode) {
-        let code = (await db.query("SELECT * FROM user_validation WHERE code = ?", [emailCode]))[0]
-        if (!code) throw "The code is incorrect, try again"
-        if (code.expiration < getUnixTime())
-            throw "Phone code has expired"
-        await db.query("UPDATE user SET emailCode = ? WHERE id = ? AND emailCode = ?", [null, id, emailCode.toUpperCase()])
-        await db.query("DELETE FROM user_validation WHERE code = ?", [emailCode])
-    }
 
-}
 
 async function getUserProfile(
     db: Database,
@@ -177,6 +158,50 @@ async function deleteProfilePicture(db: Database, photoPath: string): Promise<an
     promises.push(db.query("UPDATE user SET photoPath = null WHERE photoPath = ?", [photoPath]))
     return Promise.all(promises)
 }
+async function getUserThatHasValidationCodes(db: Database, emailCode?: string, phoneCode?: string): Promise<User> {
+    let time = getUnixTime()
+    if (emailCode)
+        if (phoneCode) {
+            let user = (await db.query("SELECT * FROM user WHERE emailCode = ? AND phoneCode = ?",[emailCode, phoneCode]))[0]
+            if(!user) throw "There is no user that has these verification codes, make sure they are both correct"
+            let emailCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[emailCode, time]))[0]
+            if(!emailCodeValid) throw "The email code has expired, request a new one"
+            let phoneCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[phoneCode, time]))[0]
+            if(!phoneCodeValid) throw "The phone code has expired, request a new one"
+            return user;
+        }
+        else {
+            let user = (await db.query("SELECT * FROM user WHERE emailCode = ?",[emailCode]))[0]
+            if(!user) throw "There is no user that has this email code, make sure it is correct"
+            let emailCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[emailCode, time]))[0]
+            if(!emailCodeValid) throw "The email code has expired, request a new one"
+            return user;
+        }
+    else {
+        if (phoneCode) {
+            let user = (await db.query("SELECT * FROM user WHERE phoneCode = ?",[phoneCode]))[0]
+            if(!user) throw "There is no user that has this phone code, make sure it is correct"
+            let phoneCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[phoneCode, time]))[0]
+            if(!phoneCodeValid) throw "The phone code has expired, request a new one"
+            return user;
+        }
+        else
+            throw "You need to provide an email code or a phone code"
+    }
+
+}
+async function validateUserCodes(db: Database, emailCode?: string, phoneCode?: string) {
+    let user = await getUserThatHasValidationCodes(db, emailCode, phoneCode)
+    if(emailCode) {
+        await db.query("UPDATE user SET emailCode = null WHERE emailCode = ?",[emailCode])
+        await db.query("DELETE FROM user_validation WHERE code = ?",[emailCode])
+    }
+    if(phoneCode) {
+        await db.query("UPDATE user SET phoneCode = null WHERE phoneCode = ?",[phoneCode])
+        await db.query("DELETE FROM user_validation WHERE code = ?",[phoneCode])
+    }
+
+}
 function generateVerificationCode(): string {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -186,6 +211,7 @@ function generateVerificationCode(): string {
 
     return text;
 }
+
 function getUnixTime(): number {
     return (Date.now() / 1000) | 0;
 }
@@ -199,6 +225,7 @@ export {
     getUserProfile,
     deleteProfilePicture,
     getUserById,
-    validateUser
+    validateUserCodes,
+    getUserThatHasValidationCodes
 }
 export type { UserIdentifier, UserAuthentication }

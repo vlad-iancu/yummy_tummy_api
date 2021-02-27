@@ -108,13 +108,12 @@
         "method": "GET",
         "params":[
             {
-                "name": "id"
+                "name": "phoneCode",
+                "type": "string"
             },
             {
-                "name": "phoneCode"
-            },
-            {
-                "name": "phoneCode"
+                "name": "phoneCode",
+                "type": "string"
             }
         ]
     }

@@ -46,7 +46,7 @@ async function insertSampleUser(emailConfig: CredentialConfig, phoneConfig: Cred
         "INSERT INTO user(name, password, email, phone, phoneCode, emailCode) VALUES(?,?,?,?,?,?)",
         [name, password, email, phone, phoneCode, emailCode])
     result.id = insertResult.insertId
-    return result;
+    return {...result,emailCode, phoneCode};
 }
 
 
@@ -72,4 +72,4 @@ function generateRandomPhoneNumber(): string {
 function getUnixTime(): number {
     return (Date.now() / 1000) | 0;
 }
-export { getUnixTime, insertSampleUser }
+export { getUnixTime, insertSampleUser, generateRandomString, generateRandomPhoneNumber }
