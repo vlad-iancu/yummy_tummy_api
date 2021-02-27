@@ -29,7 +29,6 @@ describe("Login", () => {
 
     })
     it("Login with a non validated phone", async (done) => {
-
         let password = await bcrypt.hash("parola", 10)
         let phone = "0721711423"
         let phoneCode = "ABCDEF"
@@ -119,12 +118,6 @@ describe("Login", () => {
 
         done()
 
-    })
-    it("Login with a valid email and incorrect phone", (done) => {
-        done()
-    })
-    it("Login with a valid phone and incorrect email", (done) => {
-        done()
     })
     beforeAll(() => {
         shell.exec("bash ./clear_test_db.sh", { silent: true })
