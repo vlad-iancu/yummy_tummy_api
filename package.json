@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "pretest": "bash clear_test_db.sh",
-    "test": "jest --runInBand --detectOpenHandles --forceExit --verbose --silent",
+    "test": "jest --runInBand --detectOpenHandles --forceExit --verbose",
     "posttest": "bash clear_test_db.sh",
     "start": "node ./build/index.js",
     "build": "tsc",
