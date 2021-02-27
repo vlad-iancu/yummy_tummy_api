@@ -48,7 +48,7 @@ async function getUser(
     if (validate) {
         if (user.phoneCode != null && phone)
             throw "We have sent you an SMS message with the code to this phone number, enter the code in the app"
-        if (user.emailCode != null && phone)
+        if (user.emailCode != null && email)
             throw "We have send you an email with the code to this email addess, enter the code in the app"
     }
 
