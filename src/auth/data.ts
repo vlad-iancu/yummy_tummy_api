@@ -129,6 +129,8 @@ async function updateUserProfile(db: Database, id: number, name?: string, file?:
 }
 async function addUser(db: Database, { name, password, email, phone }: UserAttributes): Promise<User> {
     password = await hash(password, 10)
+    if (!phone) phone = null
+    if (!email) email = null
     let result = await db.query("INSERT INTO user(name, password, email, phone) VALUES(?,?,?,?)",
         [name, password, email, phone])
     if (!result.insertId) throw "Could not insert the user"
@@ -162,27 +164,27 @@ async function getUserThatHasValidationCodes(db: Database, emailCode?: string, p
     let time = getUnixTime()
     if (emailCode)
         if (phoneCode) {
-            let user = (await db.query("SELECT * FROM user WHERE emailCode = ? AND phoneCode = ?",[emailCode, phoneCode]))[0]
-            if(!user) throw "There is no user that has these verification codes, make sure they are both correct"
-            let emailCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[emailCode, time]))[0]
-            if(!emailCodeValid) throw "The email code has expired, request a new one"
-            let phoneCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[phoneCode, time]))[0]
-            if(!phoneCodeValid) throw "The phone code has expired, request a new one"
+            let user = (await db.query("SELECT * FROM user WHERE emailCode = ? AND phoneCode = ?", [emailCode, phoneCode]))[0]
+            if (!user) throw "There is no user that has these verification codes, make sure they are both correct"
+            let emailCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?", [emailCode, time]))[0]
+            if (!emailCodeValid) throw "The email code has expired, request a new one"
+            let phoneCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?", [phoneCode, time]))[0]
+            if (!phoneCodeValid) throw "The phone code has expired, request a new one"
             return user;
         }
         else {
-            let user = (await db.query("SELECT * FROM user WHERE emailCode = ?",[emailCode]))[0]
-            if(!user) throw "There is no user that has this email code, make sure it is correct"
-            let emailCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[emailCode, time]))[0]
-            if(!emailCodeValid) throw "The email code has expired, request a new one"
+            let user = (await db.query("SELECT * FROM user WHERE emailCode = ?", [emailCode]))[0]
+            if (!user) throw "There is no user that has this email code, make sure it is correct"
+            let emailCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?", [emailCode, time]))[0]
+            if (!emailCodeValid) throw "The email code has expired, request a new one"
             return user;
         }
     else {
         if (phoneCode) {
-            let user = (await db.query("SELECT * FROM user WHERE phoneCode = ?",[phoneCode]))[0]
-            if(!user) throw "There is no user that has this phone code, make sure it is correct"
-            let phoneCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?",[phoneCode, time]))[0]
-            if(!phoneCodeValid) throw "The phone code has expired, request a new one"
+            let user = (await db.query("SELECT * FROM user WHERE phoneCode = ?", [phoneCode]))[0]
+            if (!user) throw "There is no user that has this phone code, make sure it is correct"
+            let phoneCodeValid = (await db.query("SELECT * FROM user_validation WHERE code = ? AND expiration > ?", [phoneCode, time]))[0]
+            if (!phoneCodeValid) throw "The phone code has expired, request a new one"
             return user;
         }
         else
@@ -192,13 +194,13 @@ async function getUserThatHasValidationCodes(db: Database, emailCode?: string, p
 }
 async function validateUserCodes(db: Database, emailCode?: string, phoneCode?: string) {
     let user = await getUserThatHasValidationCodes(db, emailCode, phoneCode)
-    if(emailCode) {
-        await db.query("UPDATE user SET emailCode = null WHERE emailCode = ?",[emailCode])
-        await db.query("DELETE FROM user_validation WHERE code = ?",[emailCode])
+    if (emailCode) {
+        await db.query("UPDATE user SET emailCode = null WHERE emailCode = ?", [emailCode])
+        await db.query("DELETE FROM user_validation WHERE code = ?", [emailCode])
     }
-    if(phoneCode) {
-        await db.query("UPDATE user SET phoneCode = null WHERE phoneCode = ?",[phoneCode])
-        await db.query("DELETE FROM user_validation WHERE code = ?",[phoneCode])
+    if (phoneCode) {
+        await db.query("UPDATE user SET phoneCode = null WHERE phoneCode = ?", [phoneCode])
+        await db.query("DELETE FROM user_validation WHERE code = ?", [phoneCode])
     }
 
 }
