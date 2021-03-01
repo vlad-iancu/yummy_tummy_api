@@ -2,7 +2,7 @@ import * as express from 'express'
 import { Database } from '../data/Database'
 import { authorize } from './authorize'
 import * as jwt from 'jsonwebtoken'
-import { addUser, deleteProfilePicture, getUser, getUserById, getUserProfile, isDuplicateUser, updateUserProfile, getUserThatHasValidationCodes, validateUserCodes } from './data'
+import { addUser, deleteProfilePicture, getUser, getUserById, getUserProfile, isDuplicateUser, updateUserProfile, getUserThatHasValidationCodes, validateUserCodes, sendEmail } from './data'
 import { UploadedFile } from 'express-fileupload'
 
 const router = express.Router();
@@ -36,8 +36,15 @@ router.post("/register", (req: express.Request, res: express.Response) => {
             }
         })
     addUser(db, { name, password, email, phone })
-        .then(user => {
+        .then(async user => {
             res.send(user)
+            if (email) {
+                await sendEmail(email, user.emailCode)
+            }
+            if (phone) {
+                
+            }
+
         })
         .catch(err => {
             let statusCode = typeof err === "string" ? 400 : 500
@@ -131,16 +138,16 @@ router.post('/validate_user', (req: express.Request, res: express.Response) => {
     let { phoneCode, emailCode } = req.query
     let db = new Database()
     validateUserCodes(db, emailCode?.toString(), phoneCode?.toString())
-    .then(async (user) => {
-        res.send({message: "Validation successful"})
-    })
-    .catch(err => {
-        let statusCode = typeof err === "string" ? 400 : 500
-        res.status(statusCode).send({ message: err })
-    })
-    .finally(() => {
-        db.close()
-    })
+        .then(async (user) => {
+            res.send({ message: "Validation successful" })
+        })
+        .catch(err => {
+            let statusCode = typeof err === "string" ? 400 : 500
+            res.status(statusCode).send({ message: err })
+        })
+        .finally(() => {
+            db.close()
+        })
 })
 
 export { router as usersRouter }

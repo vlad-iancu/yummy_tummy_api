@@ -2,6 +2,8 @@ import { compare, hash } from "bcrypt";
 import { UploadedFile } from "express-fileupload";
 import { Database } from "../data/Database";
 import { firebaseApp } from '../Firebase'
+import * as sendgrid from '@sendgrid/mail'
+import { send } from "@sendgrid/mail";
 type UserIdentifier = {
     email?: string,
     phone?: string,
@@ -61,6 +63,20 @@ async function getUser(
     user.emailCode = undefined
     return user
 
+}
+
+async function sendEmail(to: string, text: string) {
+    if (process.env.NODE_ENV != "test") {
+        sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
+        const message = {
+            to,
+            from: "iancuvladalexandru@gmail.com",
+            subject: "Hello Sendgrid",
+            text,
+        }
+        return sendgrid.send(message)
+    }
+    return Promise.resolve()
 }
 async function getUserById(db: Database, id: number): Promise<User> {
     let dbPromise = db.query("SELECT * FROM user WHERE id = ?", [id])
@@ -228,6 +244,7 @@ export {
     deleteProfilePicture,
     getUserById,
     validateUserCodes,
-    getUserThatHasValidationCodes
+    getUserThatHasValidationCodes,
+    sendEmail
 }
 export type { UserIdentifier, UserAuthentication }
