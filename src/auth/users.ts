@@ -38,13 +38,12 @@ router.post("/register", (req: express.Request, res: express.Response) => {
     addUser(db, { name, password, email, phone })
         .then(async user => {
             res.send(user)
-            if (email) {
+            /* if (email) {
                 await sendEmail(email, user.emailCode)
             }
             if (phone) {
-                
-            }
 
+            } */
         })
         .catch(err => {
             let statusCode = typeof err === "string" ? 400 : 500

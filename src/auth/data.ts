@@ -2,8 +2,8 @@ import { compare, hash } from "bcrypt";
 import { UploadedFile } from "express-fileupload";
 import { Database } from "../data/Database";
 import { firebaseApp } from '../Firebase'
-import * as sendgrid from '@sendgrid/mail'
-import { send } from "@sendgrid/mail";
+/* import * as sendgrid from '@sendgrid/mail'
+import { send } from "@sendgrid/mail"; */
 type UserIdentifier = {
     email?: string,
     phone?: string,
@@ -30,7 +30,7 @@ async function getUser(
     db: Database,
     { email, phone, password }: UserIdentifier,
     message: string = "Could not find any user with the provided credentials",
-    validate: boolean = true): Promise<User> {
+    validate: boolean = false): Promise<User> {
     let dbPromise = null;
     if (email)
         if (phone) {
@@ -65,7 +65,7 @@ async function getUser(
 
 }
 
-async function sendEmail(to: string, text: string) {
+/* async function sendEmail(to: string, text: string) {
     if (process.env.NODE_ENV != "test") {
         sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
         const message = {
@@ -76,7 +76,7 @@ async function sendEmail(to: string, text: string) {
         }
         return sendgrid.send(message)
     }
-    return Promise.resolve()
+     */return Promise.resolve()
 }
 async function getUserById(db: Database, id: number): Promise<User> {
     let dbPromise = db.query("SELECT * FROM user WHERE id = ?", [id])
