@@ -43,5 +43,16 @@ async function getRestaurants(db: Database, { q, page, pageSize }: SearchQuery):
 
     return restaurants
 }
-
-export { getRestaurants }
+async function getRestaurant(db: Database, id: number): Promise<Restaurant> {
+    let restaurant: DbRestaurant = (await db.query(
+        "SELECT location.name as locationName, restaurant.* FROM restaurant JOIN location ON location.id = restaurant.locationId WHERE restaurant.id = ? ", [id]))[0]
+    let thumbnailUrl = restaurant.thumbnailPath ? (await firebaseApp.storage().bucket()
+        .file(restaurant.thumbnailPath)
+        .getSignedUrl({ action: "read", expires: "03-09-2491" }))[0] : ""
+    let photoUrl: string = restaurant.photoPath ?
+        (await firebaseApp.storage().bucket()
+            .file(restaurant.photoPath)
+            .getSignedUrl({ action: "read", expires: "03-09-2491" }))[0] : ""
+    return {...restaurant, photoUrl, thumbnailUrl}
+}
+export { getRestaurants, getRestaurant }

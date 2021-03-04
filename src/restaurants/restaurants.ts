@@ -1,7 +1,8 @@
 import * as express from 'express'
 import { authorize } from '../auth/authorize'
-import { getRestaurants } from './data'
+import { getRestaurant, getRestaurants } from './data'
 import { Database } from '../data/Database'
+import { auth } from 'firebase-admin'
 
 const router = express.Router()
 interface SearchQuery {
@@ -28,6 +29,15 @@ router.get("/restaurants", authorize, (req, res) => {
         .finally(() => {
             db.close()
         })
+})
+
+router.get("/restaurant", authorize, (req, res) => {
+    let db = new Database()
+    let { id } = req.body
+    getRestaurant(db, id)
+    .then((restaurant) => {
+        res.send({restaurant})
+    })
 })
 
 export { router as restaurantsRouter }

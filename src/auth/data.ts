@@ -76,8 +76,8 @@ async function getUser(
         }
         return sendgrid.send(message)
     }
-     */return Promise.resolve()
-}
+     return Promise.resolve()
+}*/
 async function getUserById(db: Database, id: number): Promise<User> {
     let dbPromise = db.query("SELECT * FROM user WHERE id = ?", [id])
     let user = (await dbPromise)[0]
@@ -245,6 +245,5 @@ export {
     getUserById,
     validateUserCodes,
     getUserThatHasValidationCodes,
-    sendEmail
 }
 export type { UserIdentifier, UserAuthentication }

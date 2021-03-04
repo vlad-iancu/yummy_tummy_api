@@ -2,7 +2,7 @@ import * as express from 'express'
 import { Database } from '../data/Database'
 import { authorize } from './authorize'
 import * as jwt from 'jsonwebtoken'
-import { addUser, deleteProfilePicture, getUser, getUserById, getUserProfile, isDuplicateUser, updateUserProfile, getUserThatHasValidationCodes, validateUserCodes, sendEmail } from './data'
+import { addUser, deleteProfilePicture, getUser, getUserProfile, isDuplicateUser, updateUserProfile, validateUserCodes } from './data'
 import { UploadedFile } from 'express-fileupload'
 
 const router = express.Router();
