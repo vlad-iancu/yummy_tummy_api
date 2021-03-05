@@ -33,10 +33,13 @@ router.get("/restaurants", authorize, (req, res) => {
 
 router.get("/restaurant", authorize, (req, res) => {
     let db = new Database()
-    let { id } = req.body
-    getRestaurant(db, id)
+    let { id } = req.query
+    getRestaurant(db, parseInt(id.toString()))
     .then((restaurant) => {
         res.send({restaurant})
+    })
+    .catch(err => {
+        res.send({message: err})
     })
 })
 
